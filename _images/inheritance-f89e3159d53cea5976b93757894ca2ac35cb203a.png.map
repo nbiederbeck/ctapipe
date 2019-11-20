@@ -1,0 +1,14 @@
+<map id="inheritance01897975ce" name="inheritance01897975ce">
+<area shape="rect" id="node1" title="A singleton application with full configuration support." alt="" coords="625,181,686,198"/>
+<area shape="rect" id="node14" title="A base class for all executable tools (applications) that handles" alt="" coords="717,181,764,198"/>
+<area shape="rect" id="node2" title="A configurable that only allows one instance." alt="" coords="487,181,594,198"/>
+<area shape="rect" id="node3" title="Base class of all Components." alt="" coords="373,149,437,166"/>
+<area shape="rect" id="node10" title="A parent class for Configurables that log." alt="" coords="355,181,455,198"/>
+<area shape="rect" id="node6" title="Generic class that can hold and accumulate data to be passed" alt="" coords="29,133,85,150"/>
+<area shape="rect" id="node7" title="used to mark which fields may be removed in next version" alt="" coords="142,101,224,117"/>
+<area shape="rect" id="node8" title="Class for storing data in `Containers`." alt="" coords="33,101,81,117"/>
+<area shape="rect" id="node9" title="The base class for all classes that have descriptors." alt="" coords="18,166,96,182"/>
+<area shape="rect" id="node11" title="A dictionary of sub&#45;containers that can be added to a Container. This" alt="" coords="160,68,207,85"/>
+<area shape="rect" id="node12" title="defaultdict(default_factory[, ...]) &#45;&#45;&gt; dict with default factory" alt="" coords="28,68,86,85"/>
+<area shape="rect" id="node13" title="Manage the provenance info for a stack of *activities*" alt="" coords="25,36,89,53"/>
+</map>
