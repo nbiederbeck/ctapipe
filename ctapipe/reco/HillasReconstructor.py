@@ -236,8 +236,8 @@ class HillasReconstructor(Reconstructor):
         horizon_frame = telescopes_pointings[k].frame
         for tel_id, moments in hillas_dict.items():
             # we just need any point on the main shower axis a bit away from the cog
-            p2_x = moments.x + 0.1 * u.m * np.cos(moments.psi)
-            p2_y = moments.y + 0.1 * u.m * np.sin(moments.psi)
+            p2_x = moments.x + u.Quantity(0.1, u.m) * np.cos(moments.psi)
+            p2_y = moments.y + u.Quantity(0.1, u.m) * np.sin(moments.psi)
             focal_length = subarray.tel[tel_id].optics.equivalent_focal_length
 
             pointing = SkyCoord(
@@ -307,7 +307,7 @@ class HillasReconstructor(Reconstructor):
             crossings.append(crossing * perm[0].weight * perm[1].weight)
 
         result = normalise(np.sum(crossings, axis=0))
-        off_angles = [angle(result, cross) for cross in crossings] * u.rad
+        off_angles = u.Quantity([angle(result, cross) for cross in crossings], u.rad)
 
         err_est_dir = np.average(
             off_angles, weights=[len(cross) for cross in crossings]
@@ -357,9 +357,9 @@ class HillasReconstructor(Reconstructor):
         core_position = line_line_intersection_3d(uvw_vectors, positions)
 
         core_pos_tilted = SkyCoord(
-            x=core_position[0] * u.m,
-            y=core_position[1] * u.m,
-            frame=tilted_frame
+            x=u.Quantity(core_position[0], u.m),
+            y=u.Quantity(core_position[1], u.m),
+            frame=tilted_frame,
         )
 
         core_pos = project_to_ground(core_pos_tilted)
@@ -379,7 +379,9 @@ class HillasReconstructor(Reconstructor):
         positions = [plane.pos for plane in self.hillas_planes.values()]
 
         # not sure if its better to return the length of the vector of the z component
-        return np.linalg.norm(line_line_intersection_3d(uvw_vectors, positions)) * u.m
+        return u.Quantity(
+            np.linalg.norm(line_line_intersection_3d(uvw_vectors, positions)), u.m
+        )
 
 
 class HillasPlane:
