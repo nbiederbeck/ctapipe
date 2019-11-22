@@ -106,7 +106,14 @@ class HillasReconstructor(Reconstructor):
         self.divergent_mode = False
         self.corrected_angle_dict = {}
 
-    def predict(self, hillas_dict, inst,  array_pointing, telescopes_pointings=None):
+    def predict(
+        self,
+        hillas_dict,
+        inst,
+        array_pointing,
+        telescopes_pointings=None,
+        cameraframe=CameraFrame,
+    ):
         """
         The function you want to call for the reconstruction of the
         event. It takes care of setting up the event and consecutively
@@ -163,7 +170,8 @@ class HillasReconstructor(Reconstructor):
             hillas_dict,
             inst.subarray,
             telescopes_pointings,
-            array_pointing
+            array_pointing,
+            cameraframe,
         )
 
         # algebraic direction estimate
@@ -201,11 +209,7 @@ class HillasReconstructor(Reconstructor):
         return result
 
     def initialize_hillas_planes(
-            self,
-            hillas_dict,
-            subarray,
-            telescopes_pointings,
-            array_pointing
+        self, hillas_dict, subarray, telescopes_pointings, array_pointing, cameraframe
     ):
         """
         Creates a dictionary of :class:`.HillasPlane` from a dictionary of
@@ -238,9 +242,8 @@ class HillasReconstructor(Reconstructor):
                 frame=horizon_frame,
             )
 
-            camera_frame = CameraFrame(
-                focal_length=focal_length,
-                telescope_pointing=pointing
+            camera_frame = cameraframe(
+                focal_length=focal_length, telescope_pointing=pointing
             )
 
             cog_coord = SkyCoord(
@@ -256,9 +259,8 @@ class HillasReconstructor(Reconstructor):
             # re-project from sky to a "fake"-parallel-pointing telescope
             # then recalculate the psi angle
             if self.divergent_mode:
-                camera_frame_parallel = CameraFrame(
-                    focal_length=focal_length,
-                    telescope_pointing=array_pointing
+                camera_frame_parallel = cameraframe(
+                    focal_length=focal_length, telescope_pointing=array_pointing
                 )
                 cog_sky_to_parallel = cog_coord.transform_to(camera_frame_parallel)
                 p2_sky_to_parallel = p2_coord.transform_to(camera_frame_parallel)
