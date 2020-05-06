@@ -3,6 +3,7 @@ Image timing-based shower image parametrization.
 """
 
 import numpy as np
+from scipy import stats
 from numpy.polynomial.polynomial import polyval
 from ctapipe.containers import TimingParametersContainer
 from .hillas import camera_to_shower_coordinates
@@ -56,10 +57,11 @@ def timing_parameters(geom, image, pulse_time, hillas_parameters, cleaning_mask=
         hillas_parameters.y,
         hillas_parameters.psi
     )
-    (slope, intercept), cov = np.polyfit(
-        longi.value, pulse_time, deg=1, w=np.sqrt(image), cov=True,
-    )
-    slope_err, intercept_err = np.sqrt(np.diag(cov))
+    # (slope, intercept), cov = np.polyfit(
+    #     longi.value, pulse_time, deg=1, w=np.sqrt(image), cov=True,
+    # )
+    (slope, intercept) = stats.siegelslopes(pulse_time, longi.value)
+    # slope_err, intercept_err = np.sqrt(np.diag(cov))
     predicted_time = polyval(longi.value, (intercept, slope))
     deviation = np.sqrt(
         np.sum((pulse_time - predicted_time)**2) / pulse_time.size
@@ -69,6 +71,6 @@ def timing_parameters(geom, image, pulse_time, hillas_parameters, cleaning_mask=
         slope=slope / unit,
         intercept=intercept,
         deviation=deviation,
-        slope_err=slope_err,
-        intercept_err=intercept_err,
+        # slope_err=slope_err,
+        # intercept_err=intercept_err,
     )
